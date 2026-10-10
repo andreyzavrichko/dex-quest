@@ -3127,6 +3127,10 @@
  function signSiteClear(p){const b=signBounds(p);if(boundsTouch(b,squirrelCanopy))return false;if(landmarkBounds.some(q=>boundsTouch({...b,h:p.y-b.y+8},q)))return false;for(let x=b.x-8;x<=b.x+b.w+8;x+=8)for(let y=b.y;y<=p.y+8;y+=8){const tx=x/T,ty=y/T;if(!inside(tx,ty)||path(tx,ty)||onMotorRoad(x,y)||onSidewalk(x,y)||water(tx,ty)||buildingTile(Math.floor(tx),Math.floor(ty))||gardenTile(Math.floor(tx),Math.floor(ty))||(x>=parking.x-10&&x<=parking.x+parking.w+10&&y>=parking.y-10&&y<=parking.y+parking.h+10))return false;}if([...extraSpots,...attractions,...supporters,...benches.map(p=>point([p.tx,p.ty])),...expansionClear].some(q=>b.x<q.x+55&&b.x+b.w>q.x-55&&b.y<q.y+25&&p.y>q.y-100))return false;return !settledSigns.some(q=>{const a=signBounds(q);return b.x<a.x+a.w+12&&b.x+b.w+12>a.x&&b.y<a.y+a.h+12&&p.y+8>a.y;});}
  for(const p of parkSigns){const origin={x:p.x,y:p.y};if(!signSiteClear(p)){let found=false;for(const [dx,dy]of signOffsets){const candidate={...p,x:origin.x+dx,y:origin.y+dy};if(signSiteClear(candidate)){p.x=candidate.x;p.y=candidate.y;found=true;break;}}}settledSigns.push(p);}
 
+ // Keep the poster legs above UpCore and clear the ride to the upper left.
+ const entranceLoveSign=parkSigns.find(p=>p.style==='love'&&Math.hypot(p.x-23*T,p.y-45*T)<4*T);
+ if(entranceLoveSign){entranceLoveSign.y-=T;entranceLoveSign.x+=8;}
+
  // Keep the painted bench beside its already settled warning sign.
  const paintWarning=parkSigns.find(p=>p.lines.includes('ОКРАШЕНО!')),paintBenchBase=benches.find(b=>b.tx===60&&b.ty===40);
  const benchCandidates=[];for(let tx=Math.floor(paintWarning.x/T)-7;tx<=Math.floor(paintWarning.x/T)+7;tx++)for(let ty=Math.floor(paintWarning.y/T)-4;ty<=Math.floor(paintWarning.y/T)+3;ty++)benchCandidates.push({tx,ty,...point([tx,ty+1])});
