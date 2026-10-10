@@ -34,7 +34,7 @@
 /* Analog thumbstick: fixed base, captured finger, separate action buttons. */
 .touch .joystick{position:relative;display:block;width:132px;height:132px;flex:0 0 132px;border-radius:50%;background:radial-gradient(circle,#31393466 0 37%,#242b286b 38% 69%,#ffffff20 70% 71%,#222b2870 72%);border:1px solid #ecefe22e;box-shadow:inset 0 0 18px #0002;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:contain;cursor:grab}
 .joystick-knob{position:absolute;left:50%;top:50%;width:50px;height:50px;margin:-25px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#dbddd6e6,#a5aaa1e6);border:3px solid #e7ead96b;box-shadow:0 3px 8px #0004,inset 0 0 0 1px #72796b66;pointer-events:none;transition:transform .12s ease-out}
-.joystick.is-active{cursor:grabbing;background-color:#23342b30}.joystick.is-active .joystick-knob{transition:none}.stick-arrow{position:absolute;font-size:12px;color:#e7ecdb70;pointer-events:none;line-height:1}.stick-arrow.north{left:60px;top:10px}.stick-arrow.south{left:60px;bottom:10px}.stick-arrow.west{left:10px;top:59px}.stick-arrow.east{right:10px;top:59px}
+.joystick.is-active{cursor:grabbing;background-color:#23342b30}.joystick.is-active .joystick-knob{transition:none}.stick-arrow{position:absolute;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid currentColor;color:#e7ecdbb8;pointer-events:none;line-height:0}.stick-arrow.north{left:calc(50% - 5px);top:10px}.stick-arrow.south{left:calc(50% - 5px);bottom:10px;transform:rotate(180deg)}.stick-arrow.west{left:10px;top:calc(50% - 4px);transform:rotate(-90deg)}.stick-arrow.east{right:10px;top:calc(50% - 4px);transform:rotate(90deg)}
 @media(max-width:700px),(pointer:coarse){.touch{z-index:2;bottom:max(12px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right))}.interaction,.finish-panel{bottom:158px}.interaction{max-width:calc(100% - 20px);white-space:normal;text-align:center}.interaction button{max-width:100%}.touch #dash-button{width:62px;height:62px;border-radius:50%;margin-bottom:10px}}
 @media(prefers-reduced-motion:reduce){.joystick-knob{transition:none}}
 
@@ -104,7 +104,7 @@
 /* Three optional photo subjects; screenshots are local canvas captures. */
 .explore-tools button{min-height:44px}.explore-tools #photo-button.photo-ready{background:#f3d88c;color:#24473d;border-color:#fff0bd;box-shadow:0 0 0 2px #e4c57233}.explore-tools #photo-button{min-width:92px}#photo-album{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;list-style:none;padding:0}.photo-card{min-width:0;padding:10px;border:1px solid #c4cfb9;border-radius:10px;background:#f7f7ec}.photo-card.captured{background:#fff9e9;border-color:#d0b974}.photo-card img,.photo-empty{display:block;width:100%;height:128px;object-fit:contain;background:#324f3d;border-radius:5px;margin-bottom:12px;image-rendering:pixelated}.photo-empty{display:grid;place-items:center;background:#e6ecdf;color:#758c77;font-size:38px}.photo-card strong{font-size:14px}.photo-card p{font-size:12px;line-height:1.55}.photo-download{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px;border-radius:7px;background:#e6ebd7;color:#24473d;text-decoration:none;font-size:13px}.photo-download:hover{background:#d8e1c4}@media(max-width:600px){#photo-album{grid-template-columns:1fr}.photo-card img,.photo-empty{height:160px}.explore-tools #photo-button{min-width:0}}
 .explore-tools.compact{flex-direction:row;max-width:calc(100% - 20px);gap:8px}.explore-tools.compact button{min-width:0!important;white-space:nowrap;padding:9px 10px}.game.short-landscape .interaction{bottom:18px}.game.short-landscape .finish-panel{bottom:18px}
-.explore-tools.compact button{width:44px;height:44px;padding:0;font-size:0}.explore-tools.compact button::before{font-size:22px;line-height:1}.explore-tools.compact #map-button::before{content:"▧"}.explore-tools.compact #scan-button::before{content:"◎"}.explore-tools.compact #photo-button::before{content:"📷"}
+
 
 /* Calm hierarchy: gold belongs to the current action and chosen goal. */
 :root{--muted:#5e7163}
@@ -414,7 +414,7 @@ html.photographing{overflow:hidden}
 .game.kite-flight .explore-tools{top:12px!important;right:12px;visibility:visible;pointer-events:auto}
 .game.kite-flight #map-button,.game.kite-flight #scan-button,.game.kite-flight #photo-hint{display:none}
 .game.kite-flight .explore-tools #photo-button{visibility:visible;pointer-events:auto;width:44px;min-width:44px;height:44px;padding:0;font-size:0}
-.game.kite-flight #photo-button::before{content:"📷";font-size:22px;line-height:1}
+
 @media(max-width:600px){#neighbours-album{grid-template-columns:1fr}.journal-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}.journal-tabs button{font-size:12px;padding:8px 5px}}
 @media(max-width:350px){.journal-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.neighbour-card{padding:11px;gap:10px}.neighbour-card h3{font-size:16px}.neighbour-card canvas{width:60px;height:68px}}
 
@@ -674,3 +674,15 @@ html.park-app{height:100%;overflow:hidden}
 .journal-tabs button{min-width:0;overflow-wrap:anywhere}
 .result-actions button{margin:0}
 @media(max-width:600px){.large-copy .journal-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* park85: font-independent directions and readable compact actions. */
+.explore-tools.compact button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:68px;height:60px;flex:0 0 68px;padding:5px 3px;font-size:0;line-height:1;border-radius:10px}
+.explore-tools.compact button::before,.game.kite-flight #photo-button::before{content:"";display:block;width:24px;height:24px;flex:none;background:currentColor;-webkit-mask:var(--tool-icon) center/contain no-repeat;mask:var(--tool-icon) center/contain no-repeat;pointer-events:none}
+.explore-tools.compact button::after{content:attr(data-compact-label);display:block;max-width:100%;font:600 11px/1.15 Arial,sans-serif;letter-spacing:0;white-space:nowrap;font-variant-numeric:tabular-nums;pointer-events:none}
+#map-button{--tool-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m3%205%206-3%206%203%206-3v17l-6%203-6-3-6%203V5Z%22%2F%3E%3Cpath%20d%3D%22M9%202v17M15%205v17%22%2F%3E%3C%2Fsvg%3E")}
+#scan-button{--tool-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2210.5%22%20cy%3D%2210.5%22%20r%3D%226.5%22%2F%3E%3Cpath%20d%3D%22m15.5%2015.5%205%205M8%2010.5h5M10.5%208v5%22%2F%3E%3C%2Fsvg%3E")}
+#photo-button{--tool-icon:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%205%2010%202h4l2%203h4a2%202%200%200%201%202%202v12a2%202%200%200%201-2%202H4a2%202%200%200%201-2-2V7a2%202%200%200%201%202-2Z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2213%22%20r%3D%224%22%2F%3E%3C%2Fsvg%3E")}
+
+.game.kite-flight .explore-tools #photo-button{display:flex;align-items:center;justify-content:center;flex:0 0 44px}
+.game.kite-flight #photo-button::after{display:none}
+@media(max-width:700px),(pointer:coarse){.game.discovery-view .explore-tools button{width:44px;height:44px;flex-basis:44px}.game.discovery-view .explore-tools button::after{display:none}.game.short-landscape:not(.discovery-view) .notification-lane{max-width:calc(100% - 248px)}}
