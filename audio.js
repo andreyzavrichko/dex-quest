@@ -97,6 +97,10 @@ window.ParkAudio=(()=>{
  }
  function thunder(){toneChannel='nature';try{tone(85,45,1.65,.13,'triangle');tone(58,34,1.9,.085,'sine',.18);}finally{toneChannel='effects';}}
  function reward(){tone(523,523,.16,.23);tone(659,659,.16,.23,'sine',.15);tone(784,784,.3,.23,'sine',.3);}
+ // Mobile browsers can suspend audio independently of the game. A fresh user
+ // gesture may resume an existing context, but must never override manual mute.
+ function recoverSound(){if(ctx&&enabled&&!document.hidden&&ctx.state!=='running'&&ctx.state!=='closed')void unlock();}
+ document.addEventListener('pointerdown',recoverSound,true);document.addEventListener('keydown',recoverSound,true);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hush();});window.addEventListener('blur',hush);window.addEventListener('pagehide',hush);
  function detector(distance){tone(distance<100?950:680,distance<100?950:680,.085,.085);}
  function music(beat){const notes=[262,330,392,330,349,440,392,330],n=notes[beat%notes.length];tone(n,n,.25,.14,'triangle');}
