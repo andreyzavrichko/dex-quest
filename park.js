@@ -3742,9 +3742,9 @@
  function mapLabel(s,x,y,size=13,priority=0){if(comfort.large)size+=3;labelQueue.push({s,x,y,size,priority});}
  const overlaps=(a,b)=>a.x<b.x+b.w+4&&a.x+a.w+4>b.x&&a.y<b.y+b.h+4&&a.y+a.h+4>b.y;
  function compactDrivingHUD(){return driving&&viewW<420;}
- let shortViewport=false;
+ let shortViewport=false,touchTools=false;
  function melodyFocused(){return melody.active&&!driving&&!cycling&&!funScene&&player.x>=musicTiles[0].x-58&&player.x<=musicTiles[7].x+58&&Math.abs(player.y-musicTiles[0].y)<90;}
- function hideMiniMap(){return viewW<420||focusedDialogue()||focusedParkShow()||compactDrivingHUD()||shortViewport;}
+ function hideMiniMap(){return touchTools||viewW<420||focusedDialogue()||focusedParkShow()||compactDrivingHUD()||shortViewport;}
  function focusedDialogue(){return viewW<420&&labelQueue.some(l=>l.priority>=5);}
  function focusedParkShow(){return viewW<420&&((['birds','dandelion'].includes(discoveryFocus()))||(duckCrossing&&Math.hypot(player.x-duckCrossingSite.x,player.y-duckCrossingSite.y)<360)||auroraLevel()>.15||(dawnFlock&&Math.hypot(player.x-dawnFlock.x,player.y-dawnFlock.y)<280)||(wheelLightShow&&Math.hypot(player.x-wheel.x,player.y-wheel.y)<280)||['stoneSkip','kite','bear','cinema','portrait','magic','telescope','fairAward'].includes(funScene?.kind)||(fireflyDance&&Math.hypot(player.x-heartSite.x,player.y-heartSite.y)<280)||(fountainShowLevel()>.1&&Math.hypot(player.x-42.5*T,player.y-28.5*T)<260));}
  function drawLabels(){
@@ -4553,7 +4553,16 @@
   for(const side of [-1,1]){const x=side*18;for(let row=0;row<steps;row++){const u=row/steps,y=42+Math.round(u*144),height=Math.ceil(144/steps),half=4+u*34;for(const band of [1,.78,.52]){ctx.globalAlpha=level*(reduced?.75:1)*.13*Math.pow(1-u,1.5)*(band===1?.45:.8);ctx.fillStyle='#ffeac0';const w=Math.max(2,Math.round(half*band));ctx.fillRect(x-w,y,w*2,height);}}ctx.globalAlpha=level*(reduced?.75:1);rect(x-8,31,16,13,'#ffedaa33');rect(x-4,34,8,5,'#fff7d8');rect(side*23-3,-40,6,8,bmwLightState().brake?'#ff5c52':'#c96c58');}
   ctx.restore();
  }
- function resize(){touchLayoutDirty=false;const r=canvas.getBoundingClientRect();viewCSSHeight=Math.max(1,r.height);const controlScale=Math.min(comfort.controls,Math.max(.8,(r.width-40)/(132+(driving?130:62))));for(const id of ['joystick','car-controls','dash-button'])$(id).style.transform='scale('+controlScale+')';const d=Math.min(devicePixelRatio||1,comfort.lightweight?1:2);const pixelWidth=Math.round(r.width*d),pixelHeight=Math.round(r.height*d);if(canvas.width!==pixelWidth)canvas.width=pixelWidth;if(canvas.height!==pixelHeight)canvas.height=pixelHeight;viewH=480;const top=Math.round(r.height*145/viewH+12),compact=r.height<525;$('explore-tools').style.top=top+'px';$('explore-tools').classList.toggle('compact',compact);shortViewport=r.height<400&&r.width>550;canvas.parentElement?.classList.toggle('short-landscape',shortViewport);const notice=$('announcement').parentElement;if(notice)notice.style.maxHeight=compact?(top-22)+'px':'';}
+ function resize(){touchLayoutDirty=false;const r=canvas.getBoundingClientRect();viewCSSHeight=Math.max(1,r.height);const controlScale=Math.min(comfort.controls,Math.max(.8,(r.width-40)/(132+(driving?130:62))));for(const id of ['joystick','car-controls','dash-button'])$(id).style.transform='scale('+controlScale+')';const d=Math.min(devicePixelRatio||1,comfort.lightweight?1:2);const pixelWidth=Math.round(r.width*d),pixelHeight=Math.round(r.height*d);if(canvas.width!==pixelWidth)canvas.width=pixelWidth;if(canvas.height!==pixelHeight)canvas.height=pixelHeight;viewH=480;
+  // Touch tools stay at the edge rather than following the desktop minimap's height.
+  touchTools=mobileScreen()||r.width<=700;
+  const top=touchTools?10:Math.round(r.height*145/viewH+12),compact=touchTools||r.height<525;
+  $('explore-tools').style.top=top+'px';$('explore-tools').classList.toggle('compact',compact);
+  canvas.parentElement?.classList.toggle('touch-tools',touchTools);
+  canvas.parentElement?.classList.toggle('tools-row',touchTools&&r.width>r.height);
+  shortViewport=r.height<400&&r.width>550;canvas.parentElement?.classList.toggle('short-landscape',shortViewport);
+  const notice=$('announcement').parentElement;if(notice)notice.style.maxHeight=!touchTools&&compact?(top-22)+'px':'';
+ }
  new ResizeObserver(resize).observe(canvas);
  let soundZoneTime=-1,soundZoneCache={discovery:ambientSceneBusy(),fountain:0,carousel:0,grove:0};
  function musicSoundFocused(){return !!(funScene&&(funScene.kind==='bear'||funScene.kind==='music'||funScene.kind==='fairAward'||funScene.kind==='fair'&&funScene.gameId==='music')||bearEncore||melodyFocused()||musicReplay||musicPulse.some(p=>p>0));}
